@@ -13,12 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.glance.appwidget.components.Scaffold
-import androidx.glance.layout.Column
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posialero.echojournal.core.presentation.designsystem.theme.EchoJournalTheme
 import com.posialero.echojournal.core.presentation.designsystem.theme.bgGradient
+import com.posialero.echojournal.echos.presentation.echos.components.EchoFilterRow
 import com.posialero.echojournal.echos.presentation.echos.components.EchoRecordFloatingActionButton
 import com.posialero.echojournal.echos.presentation.echos.components.EchosEmptyBackground
 import com.posialero.echojournal.echos.presentation.echos.components.EchosTopBar
@@ -64,6 +63,19 @@ fun EchosScreen(
                 )
                 .padding(innerPadding)
         ) {
+            EchoFilterRow(
+                moodChipContent = state.moodChipContent,
+                hasActiveMoodFilters = state.hasActiveMoodFilters,
+                selectedEchoFilterChip = state.selectedEchoFilterChip,
+                moods = state.moods,
+                topicChipTitle = state.topicChipTitle,
+                topics = state.topics,
+                hasActiveTopicFilters = state.hasActiveTopicFilters,
+                onAction = onAction,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+
             when {
                 state.isLoadingData -> {
                     CircularProgressIndicator(
@@ -81,6 +93,10 @@ fun EchosScreen(
                             .weight(1f)
                             .fillMaxWidth()
                     )
+                }
+
+                else -> {
+
                 }
             }
         }
