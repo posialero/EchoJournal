@@ -24,7 +24,8 @@ import com.posialero.echojournal.core.presentation.designsystem.theme.MoodPrimar
 import com.posialero.echojournal.core.presentation.designsystem.theme.MoodPrimary80
 import com.posialero.echojournal.core.presentation.util.formatMMSS
 import com.posialero.echojournal.echos.presentation.models.MoodUi
-import com.posialero.echojournal.echos.presentation.models.PlaybackState
+import com.posialero.echojournal.echos.presentation.echos.models.PlaybackState
+import com.posialero.echojournal.echos.presentation.echos.models.TrackSizeInfo
 import kotlin.random.Random
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -39,6 +40,7 @@ fun EchoMoodPlayer(
     powerRatios: List<Float>,
     onPlayClick: () -> Unit,
     onPauseClick: () -> Unit,
+    onTrackSizeAvailable: (TrackSizeInfo) -> Unit,
     amplitudeBarWidth: Dp = 5.dp,
     amplitudeBarSpacing: Dp = 4.dp,
     modifier: Modifier = Modifier
@@ -129,6 +131,7 @@ private fun EchoMoodPlayerPreview() {
             totalPlaybackDuration = 250.seconds,
             powerRatios = ratios,
             onPauseClick = {},
+            onTrackSizeAvailable = {},
             onPlayClick = {},
             modifier = Modifier
                 .fillMaxWidth()

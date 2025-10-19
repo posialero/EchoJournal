@@ -16,7 +16,7 @@ import com.posialero.echojournal.core.presentation.designsystem.theme.EchoJourna
 import com.posialero.echojournal.core.presentation.designsystem.theme.Pause
 import com.posialero.echojournal.core.presentation.util.defaultShadow
 import com.posialero.echojournal.echos.presentation.models.MoodUi
-import com.posialero.echojournal.echos.presentation.models.PlaybackState
+import com.posialero.echojournal.echos.presentation.echos.models.PlaybackState
 
 
 @Composable
