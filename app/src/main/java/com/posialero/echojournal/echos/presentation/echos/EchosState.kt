@@ -4,6 +4,7 @@ import com.posialero.echojournal.R
 import com.posialero.echojournal.core.presentation.designsystem.dropdowns.Selectable
 import com.posialero.echojournal.core.presentation.designsystem.dropdowns.Selectable.Companion.asUnselectedItems
 import com.posialero.echojournal.core.presentation.util.UiText
+import com.posialero.echojournal.echos.presentation.echos.models.AudioCaptureMethod
 import com.posialero.echojournal.echos.presentation.echos.models.EchoDaySection
 import com.posialero.echojournal.echos.presentation.echos.models.EchoFilterChip
 import com.posialero.echojournal.echos.presentation.echos.models.MoodChipContent
@@ -21,6 +22,7 @@ data class EchosState(
     val moodChipContent: MoodChipContent = MoodChipContent(),
     val selectedEchoFilterChip: EchoFilterChip? = null,
     val topicChipTitle: UiText = UiText.StringResource(R.string.all_topics),
+    val currentCaptureMethod: AudioCaptureMethod? = null
 ) {
     val echoDaySections = echos
         .toList()

@@ -6,16 +6,21 @@ import androidx.lifecycle.viewModelScope
 import com.posialero.echojournal.R
 import com.posialero.echojournal.core.presentation.designsystem.dropdowns.Selectable
 import com.posialero.echojournal.core.presentation.util.UiText
+import com.posialero.echojournal.echos.presentation.echos.models.AudioCaptureMethod
 import com.posialero.echojournal.echos.presentation.echos.models.EchoFilterChip
 import com.posialero.echojournal.echos.presentation.echos.models.MoodChipContent
 import com.posialero.echojournal.echos.presentation.models.MoodUi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class EchosViewModel : ViewModel() {
 
@@ -26,6 +31,10 @@ class EchosViewModel : ViewModel() {
 
 
     private val _state = MutableStateFlow(EchosState())
+
+    private val eventChannel = Channel<EchosEvent>()
+    val events = eventChannel.receiveAsFlow()
+
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
@@ -74,11 +83,21 @@ class EchosViewModel : ViewModel() {
             }
 
             EchosAction.OnFabClick -> {
-
+                requestAudioPermission()
+                _state.update {
+                    it.copy(
+                        currentCaptureMethod = AudioCaptureMethod.STANDARD
+                    )
+                }
             }
 
             EchosAction.OnFabLongClick -> {
-
+                requestAudioPermission()
+                _state.update {
+                    it.copy(
+                        currentCaptureMethod = AudioCaptureMethod.QUICK
+                    )
+                }
             }
 
             is EchosAction.OnRemoveFilters -> {
@@ -89,7 +108,12 @@ class EchosViewModel : ViewModel() {
             }
 
             EchosAction.OnSettingsClick -> TODO()
-
+            EchosAction.OnPauseClick -> TODO()
+            is EchosAction.OnPlayEchoClick -> TODO()
+            is EchosAction.OnTrackSizeAvailable -> TODO()
+            EchosAction.OnAudioPermissionGranted -> {
+                Timber.d("Recording started")
+            }
         }
     }
 
@@ -139,6 +163,10 @@ class EchosViewModel : ViewModel() {
                 )
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun requestAudioPermission() = viewModelScope.launch {
+        eventChannel.send(EchosEvent.RequestAudioPermission)
     }
 
     private fun List<String>.deriveTopicsToText(): UiText {
