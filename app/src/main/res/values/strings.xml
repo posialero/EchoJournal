@@ -20,7 +20,7 @@
     <string name="topics_selected_overflow">%1$s, %2$s + %3$d</string>
     <string name="recording_your_memories">Recording your memories…</string>
     <string name="recording_paused">Recording paused</string>
-    <string name="pause_or_resume_recording">Pause or resume recording</string>
+    <string name="pause_or_resume_recording">Resume recording</string>
     <string name="cancel_recording">Cancel recording</string>
     <string name="navigate_back">Navigate back</string>
     <string name="new_entry">New Entry</string>
@@ -49,4 +49,7 @@
     <string name="playing">Playing</string>
     <string name="paused">Paused</string>
     <string name="stopped">Stopped</string>
+    <string name="finish_recording">Finish recording</string>
+    <string name="pause_recording">Pause recording</string>
+    <string name="resume_recording">Resume recording</string>
 </resources>
