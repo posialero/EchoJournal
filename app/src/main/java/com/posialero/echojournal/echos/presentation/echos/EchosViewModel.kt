@@ -15,7 +15,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -95,7 +93,7 @@ class EchosViewModel(
                 toggleTopicFilter(action.topic)
             }
 
-            EchosAction.OnFabClick -> {
+            EchosAction.OnRecordFabClick -> {
                 requestAudioPermission()
                 _state.update {
                     it.copy(
@@ -104,7 +102,7 @@ class EchosViewModel(
                 }
             }
 
-            EchosAction.OnFabLongClick -> {
+            EchosAction.OnRequestPermissionQuickRecording -> {
                 requestAudioPermission()
                 _state.update {
                     it.copy(
@@ -141,6 +139,10 @@ class EchosViewModel(
             }
             EchosAction.OnResumeRecordingClick -> {
                 resumeRecording()
+            }
+
+            EchosAction.OnRecordButtonLongClick -> {
+                startRecording(captureMethod = AudioCaptureMethod.QUICK)
             }
         }
     }

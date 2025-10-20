@@ -1,6 +1,7 @@
 package com.posialero.echojournal.echos.presentation.echos
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.posialero.echojournal.R
 import com.posialero.echojournal.core.presentation.designsystem.theme.EchoJournalTheme
@@ -27,7 +29,7 @@ import com.posialero.echojournal.core.presentation.util.ObserveAsEvents
 import com.posialero.echojournal.core.presentation.util.isAppInForeground
 import com.posialero.echojournal.echos.presentation.echos.components.EchoFilterRow
 import com.posialero.echojournal.echos.presentation.echos.components.EchoList
-import com.posialero.echojournal.echos.presentation.echos.components.EchoRecordFloatingActionButton
+import com.posialero.echojournal.echos.presentation.echos.components.EchoQuickRecordFloatingActionButton
 import com.posialero.echojournal.echos.presentation.echos.components.EchoRecordingSheet
 import com.posialero.echojournal.echos.presentation.echos.components.EchosEmptyBackground
 import com.posialero.echojournal.echos.presentation.echos.components.EchosTopBar
@@ -88,11 +90,31 @@ fun EchosScreen(
     state: EchosState,
     onAction: (EchosAction) -> Unit,
 ) {
+    val context = LocalContext.current
     Scaffold(
         floatingActionButton = {
-            EchoRecordFloatingActionButton(
+            EchoQuickRecordFloatingActionButton(
+                isQuickRecording = state.recordingState == RecordingState.QUICK_CAPTURE,
                 onClick = {
-                    onAction(EchosAction.OnFabClick)
+                    onAction(EchosAction.OnRecordFabClick)
+                },
+                onLongPressEnd = { cancelledRecording ->
+                    if (cancelledRecording) {
+                        onAction(EchosAction.OnCancelRecording)
+                    } else {
+                        onAction(EchosAction.OnCompleteRecordingClick)
+                    }
+                },
+                onLongPressStart = {
+                    val hasPermission = ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.RECORD_AUDIO
+                    ) == PackageManager.PERMISSION_GRANTED
+                    if (hasPermission) {
+                        onAction(EchosAction.OnRecordButtonLongClick)
+                    } else {
+                        onAction(EchosAction.OnRequestPermissionQuickRecording)
+                    }
                 }
             )
         },
