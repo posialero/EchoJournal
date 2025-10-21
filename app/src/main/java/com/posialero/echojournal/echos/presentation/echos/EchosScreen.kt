@@ -27,6 +27,7 @@ import com.posialero.echojournal.core.presentation.designsystem.theme.EchoJourna
 import com.posialero.echojournal.core.presentation.designsystem.theme.bgGradient
 import com.posialero.echojournal.core.presentation.util.ObserveAsEvents
 import com.posialero.echojournal.core.presentation.util.isAppInForeground
+import com.posialero.echojournal.echos.domain.recording.RecordingDetails
 import com.posialero.echojournal.echos.presentation.echos.components.EchoFilterRow
 import com.posialero.echojournal.echos.presentation.echos.components.EchoList
 import com.posialero.echojournal.echos.presentation.echos.components.EchoQuickRecordFloatingActionButton
@@ -40,6 +41,7 @@ import timber.log.Timber
 
 @Composable
 fun EchosRoot(
+    onNavigateToCreateEcho: (RecordingDetails) -> Unit,
     viewModel: EchosViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -67,7 +69,7 @@ fun EchosRoot(
                 ).show()
             }
             is EchosEvent.OnDoneRecording -> {
-                Timber.d("OnDoneRecording")
+                onNavigateToCreateEcho(event.recordingDetails)
             }
         }
     }
